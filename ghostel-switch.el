@@ -3,7 +3,7 @@
 ;; Copyright (C) 2026 JulHee
 
 ;; Author: JulHee
-;; Version: 0.0.2
+;; Version: 0.0.3
 ;; Package-Requires: ((emacs "28.1") (ghostel "0.45.0"))
 ;; Keywords: convenience terminals
 ;; URL: https://github.com/JulHee/ghostel-switch
@@ -93,19 +93,26 @@ Falls back to `ghostel-switch-no-project-name' when there is no project."
         (substring name 0 max-len)
       name)))
 
-(defun ghostel-switch--create-or-switch (name)
-  "Switch to a ghostel buffer named NAME, creating it if it does not exist."
+(defun ghostel-switch--create-or-switch (name &optional global)
+  "Switch to a ghostel buffer named NAME, creating it if it does not exist.
+When GLOBAL is non-nil, the new buffer is created as a global terminal
+whose `default-directory' is the user's home directory, so ghostel's
+project scoping does not claim it."
   (let ((buf-name (format "*ghostel:%s*" name)))
     (if (get-buffer buf-name)
         (switch-to-buffer buf-name)
-      (ghostel name)
+      (let ((default-directory
+             (if global (expand-file-name "~/") default-directory)))
+        (ghostel name))
       ;; Rename buffer to correct naming scheme
       (rename-buffer buf-name))))
 
-(defun ghostel-switch--select-and-switch (buffers name-fn prompt-label)
+(defun ghostel-switch--select-and-switch (buffers name-fn prompt-label &optional global)
   "Prompt to select a ghostel buffer from BUFFERS.
 An empty selection creates a new buffer. NAME-FN is called to obtain the
-new buffer's name. PROMPT-LABEL defines input text"
+new buffer's name. PROMPT-LABEL defines input text. When GLOBAL is non-nil,
+the new buffer is created outside any project (see
+`ghostel-switch--create-or-switch')."
   (let* ((names (mapcar #'buffer-name buffers))
          (preview (funcall name-fn))
          (selection (completing-read
@@ -113,17 +120,19 @@ new buffer's name. PROMPT-LABEL defines input text"
                      names nil nil nil
                      'ghostel-switch-buffer-history nil)))
     (if (string-empty-p selection)
-        (ghostel-switch--create-or-switch (funcall name-fn))
+        (ghostel-switch--create-or-switch (funcall name-fn) global)
       (switch-to-buffer (get-buffer selection)))))
 
 ;;; Commands
 
 (defun ghostel-switch-all ()
   "Switch between all open Ghostel buffers.
-Pressing Enter with an empty selection creates a new Ghostel buffer."
+Pressing Enter with an empty selection creates a new Ghostel buffer.
+The new buffer is created as a global terminal in the user's home
+directory, so it is not picked up by ghostel's project scoping."
   (interactive)
   (ghostel-switch--select-and-switch
-   (ghostel--all-buffers) #'ghostel-switch--next-name "Ghostel"))
+   (ghostel--all-buffers) #'ghostel-switch--next-name "Ghostel" t))
 
 (defun ghostel-switch-project ()
   "Switch between Ghostel buffers belonging to the current project.
