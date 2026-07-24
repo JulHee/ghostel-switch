@@ -8,6 +8,14 @@ Quickly create and switch between [[https://github.com/dakra/ghostel][Ghostel]] 
 (require 'ghostel-switch)
 #+end_src
 
+** Doom Emacs
+
+#+begin_src emacs-lisp
+(package! ghostel-switch
+          :recipe (:type git :host github :repo "JulHee/ghostel-switch"))
+(use-package! ghostel-switch)
+#+end_src
+
 * Usage
 
 - =ghostel-switch-all= :: switch/create among all Ghostel buffers
