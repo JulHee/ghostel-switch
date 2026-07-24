@@ -1,0 +1,25 @@
+#+title: ghostel-switch
+
+Quickly create and switch between [[https://github.com/dakra/ghostel][Ghostel]] terminal buffers in Emacs
+
+* Installation
+
+#+begin_src emacs-lisp
+(require 'ghostel-switch)
+#+end_src
+
+* Usage
+
+- =ghostel-switch/switch-all= :: switch/create among all Ghostel buffers
+- =ghostel-switch/switch-project= :: switch/create among current project's buffers
+
+
+* Configuration
+
+- =ghostel-switch-project-name-max-length= :: Max characters of the project name used in buffer names (default =10=)
+- =ghostel-switch-no-project-name= :: Name for unknown projects (default ="default"=)
+
+#+begin_src emacs-lisp
+(setq ghostel-switch-project-name-max-length 10)
+(setq ghostel-switch-no-project-name "default")
+#+end_src
