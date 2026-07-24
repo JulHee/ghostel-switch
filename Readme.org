@@ -10,8 +10,8 @@ Quickly create and switch between [[https://github.com/dakra/ghostel][Ghostel]] 
 
 * Usage
 
-- =ghostel-switch/switch-all= :: switch/create among all Ghostel buffers
-- =ghostel-switch/switch-project= :: switch/create among current project's buffers
+- =ghostel-switch-all= :: switch/create among all Ghostel buffers
+- =ghostel-switch-project= :: switch/create among current project's buffers
 
 
 * Configuration

@@ -3,7 +3,7 @@
 ;; Copyright (C) 2026 JulHee
 
 ;; Author: JulHee
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Package-Requires: ((emacs "28.1") (ghostel "0.45.0"))
 ;; Keywords: convenience terminals
 ;; URL: https://github.com/JulHee/ghostel-switch
@@ -34,8 +34,8 @@
 ;; Project-scoped buffers are named `*ghostel:<PROJECT>-<N>*'.
 
 ;; Usage:
-;;   M-x ghostel-switch/switch-all         ;; switch/create among all buffers
-;;   M-x ghostel-switch/switch-project     ;; switch/create project buffers
+;;   M-x ghostel-switch-all         ;; switch/create among all buffers
+;;   M-x ghostel-switch-project     ;; switch/create project buffers
 ;;
 ;; Configuration:
 ;;   (setq ghostel-switch-project-name-max-length 10) ;; default 10
@@ -118,14 +118,14 @@ new buffer's name. PROMPT-LABEL defines input text"
 
 ;;; Commands
 
-(defun ghostel-switch-switch-all ()
+(defun ghostel-switch-all ()
   "Switch between all open Ghostel buffers.
 Pressing Enter with an empty selection creates a new Ghostel buffer."
   (interactive)
   (ghostel-switch--select-and-switch
    (ghostel--all-buffers) #'ghostel-switch--next-name "Ghostel"))
 
-(defun ghostel-switch-switch-project ()
+(defun ghostel-switch-project ()
   "Switch between Ghostel buffers belonging to the current project.
 Pressing Enter with an empty selection creates a new Ghostel buffer for this
 project, named `ghostel-<PROJECT>-<N>'."
